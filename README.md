@@ -21,7 +21,7 @@ This project reflects my curiosity, learning mindset, and willingness to step ou
 🚀 Live Deployment
 
 🔗 Live App:
-👉 https://calorie-tracker-hcpr.vercel.app
+👉 https://calorie-tracker-hcpr.vercel.app/
 
 📌 Future Improvements (In Progress)
 
