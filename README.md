@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This project is an ongoing full-stack learning project and also my first complete experience building a full-stack web application, especially working deeply on the backend side.
 
-## Getting Started
+Although this was an internal project, I faced multiple real-world challenges while implementing authentication, database integration, API design, environment variables, and deployment. Through this process, I learned a lot about backend development, MongoDB, JWT authentication, API testing, and production deployment on Vercel.
 
-First, run the development server:
+Due to discovering the job opportunity a bit late, I had around 2 days to:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Learn and implement backend concepts
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build APIs
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Integrate the frontend with the backend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Test APIs using Postman
 
-## Learn More
+Deploy the application successfully
 
-To learn more about Next.js, take a look at the following resources:
+The current UI is basic and entry-level, as my primary focus during this phase was understanding backend architecture and full-stack workflow. I am actively working on improving the UI to make it cleaner, more interactive, and user-friendly, and I plan to push UI updates within the next 1–2 days.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project reflects my curiosity, learning mindset, and willingness to step outside my comfort zone to explore new technologies and concepts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🚀 Live Deployment
 
-## Deploy on Vercel
+🔗 Live App:
+👉 https://calorie-tracker-hcpr.vercel.app
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+📌 Future Improvements (In Progress)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+UI/UX refinement
+
+Better responsiveness and animations
+
+Improved dashboard layout
+
+Additional validations and feedback states
