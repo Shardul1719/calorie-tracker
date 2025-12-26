@@ -1,0 +1,393 @@
+{
+  "info": {
+    "name": "CalorieTracker API",
+    "description": "Complete API collection for CalorieTracker application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Goals",
+      "item": [
+        {
+          "name": "Get All Goals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/goals",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "goals"]
+            }
+          }
+        },
+        {
+          "name": "Create Goal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Weight Loss\",\n  \"targetCalories\": 1800,\n  \"targetProtein\": 140,\n  \"targetCarbs\": 150,\n  \"targetFats\": 60,\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/goals",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "goals"]
+            }
+          }
+        },
+        {
+          "name": "Update Goal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aggressive Weight Loss\",\n  \"targetCalories\": 1600,\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/goals/:goalId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "goals", ":goalId"],
+              "variable": [
+                {
+                  "key": "goalId",
+                  "value": "REPLACE_WITH_GOAL_ID"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Goal",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/goals/:goalId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "goals", ":goalId"],
+              "variable": [
+                {
+                  "key": "goalId",
+                  "value": "REPLACE_WITH_GOAL_ID"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Meals",
+      "item": [
+        {
+          "name": "Get All Meals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/meals",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "meals"]
+            }
+          }
+        },
+        {
+          "name": "Get Meals by Date",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/meals?date=2025-12-24",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "meals"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-12-24"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Meals by Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/meals?mealType=breakfast",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "meals"],
+              "query": [
+                {
+                  "key": "mealType",
+                  "value": "breakfast"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Meal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mealName\": \"Grilled Chicken Salad\",\n  \"mealType\": \"lunch\",\n  \"date\": \"2025-12-24T12:00:00.000Z\",\n  \"foodItems\": [\n    {\n      \"foodName\": \"Chicken Breast\",\n      \"amount\": 200,\n      \"unit\": \"grams\",\n      \"calories\": 330,\n      \"protein\": 62,\n      \"carbs\": 0,\n      \"fats\": 7.2\n    },\n    {\n      \"foodName\": \"Mixed Greens\",\n      \"amount\": 100,\n      \"unit\": \"grams\",\n      \"calories\": 25,\n      \"protein\": 2,\n      \"carbs\": 5,\n      \"fats\": 0.3\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/meals",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "meals"]
+            }
+          }
+        },
+        {
+          "name": "Update Meal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mealName\": \"Updated Meal Name\",\n  \"mealType\": \"dinner\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/meals/:mealId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "meals", ":mealId"],
+              "variable": [
+                {
+                  "key": "mealId",
+                  "value": "REPLACE_WITH_MEAL_ID"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Meal",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/meals/:mealId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "meals", ":mealId"],
+              "variable": [
+                {
+                  "key": "mealId",
+                  "value": "REPLACE_WITH_MEAL_ID"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Daily Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/meals/stats?date=2025-12-24",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "meals", "stats"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-12-24"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Food Search",
+      "item": [
+        {
+          "name": "Search Food",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/foods/search?query=chicken",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "foods", "search"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "chicken"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
