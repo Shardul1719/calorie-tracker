@@ -20,6 +20,11 @@ const UserSchema = new mongoose.Schema({
     minlength: [6, 'Password must be at least 6 characters'],
     select: false, // Don't return password by default
   },
+  // Add these fields to your User schema:
+    age: { type: Number },
+    weight: { type: Number }, // in kg
+    height: { type: Number }, // in cm
+    gender: { type: String, enum: ['male', 'female'] },
 }, {
   timestamps: true,
 });

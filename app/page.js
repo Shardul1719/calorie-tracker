@@ -1,12 +1,15 @@
 'use client';
 
+import { Apple, Camera, TrendingUp, BarChart3 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function Home() {
+export default function LandingPage() {
   const router = useRouter();
 
   useEffect(() => {
+    // Check if user is already logged in
     const token = localStorage.getItem('token');
     if (token) {
       router.push('/dashboard');
@@ -14,54 +17,40 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-500 to-primary-700">
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center text-red-400 mb-16">
-          <h1 className="text-5xl font-bold mb-4">CalorieTracker</h1>
-          <p className="text-xl text-primary-100">
-            Track your meals, hit your goals, transform your health
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <div className="flex justify-center mb-6">
+            <Apple className="w-20 h-20 text-green-600" />
+          </div>
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">CalorieFit</h1>
+          <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+            "Take control of your nutrition, one meal at a time. Track calories, achieve your goals, and transform your health journey."
           </p>
-        </div>
-
-        <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-black">
-            <div className="text-4xl mb-4">📊</div>
-            <h3 className="text-xl font-semibold mb-2">Track Nutrition</h3>
-            <p className="text-primary-100">
-              Monitor calories, protein, carbs, and fats for every meal
-            </p>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-black">
-            <div className="text-4xl mb-4">🎯</div>
-            <h3 className="text-xl font-semibold mb-2">Set Goals</h3>
-            <p className="text-primary-100">
-              Create custom daily nutrition targets and track progress
-            </p>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-black">
-            <div className="text-4xl mb-4">📈</div>
-            <h3 className="text-xl font-semibold mb-2">View Insights</h3>
-            <p className="text-primary-100">
-              Visualize your nutrition data with charts and reports
-            </p>
-          </div>
-        </div>
-
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={() => router.push('/register')}
-            className="bg-red-400 text-primary-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-primary-50 transition-colors"
+          <Link
+            href="/auth"
+            className="inline-block bg-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-700 transition-all shadow-lg"
           >
             Get Started
-          </button>
-          <button
-            onClick={() => router.push('/login')}
-            className="bg-transparent border-2 border-white text-black px-8 py-3 rounded-lg font-semibold text-lg hover:bg-white/10 transition-colors"
-          >
-            Sign In
-          </button>
+          </Link>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8 mt-20">
+          <div className="bg-white p-8 rounded-2xl shadow-md text-center">
+            <Camera className="w-12 h-12 text-green-600 mx-auto mb-4" />
+            <h3 className="text-xl font-bold mb-2">Easy Tracking</h3>
+            <p className="text-gray-600">Log your meals quickly with our smart food search</p>
+          </div>
+          <div className="bg-white p-8 rounded-2xl shadow-md text-center">
+            <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-4" />
+            <h3 className="text-xl font-bold mb-2">Track Progress</h3>
+            <p className="text-gray-600">Monitor your daily and monthly nutrition trends</p>
+          </div>
+          <div className="bg-white p-8 rounded-2xl shadow-md text-center">
+            <BarChart3 className="w-12 h-12 text-green-600 mx-auto mb-4" />
+            <h3 className="text-xl font-bold mb-2">Achieve Goals</h3>
+            <p className="text-gray-600">Set personalized targets for bulk or cut</p>
+          </div>
         </div>
       </div>
     </div>
