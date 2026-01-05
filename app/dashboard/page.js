@@ -173,10 +173,10 @@ export default function DashboardPage() {
         foodName: item.foodName,
         amount: item.quantity, // quantity -> amount
         unit: 'grams',
-        calories: (item.quantity / 100) * item.caloriesPer100g,
-        protein: (item.quantity / 100) * item.proteinPer100g,
-        carbs: (item.quantity / 100) * item.carbsPer100g,
-        fats: (item.quantity / 100) * item.fatsPer100g,
+        calories: Math.round((item.quantity / 100) * item.caloriesPer100g),
+        protein: Math.round((item.quantity / 100) * item.proteinPer100g),
+        carbs: Math.round((item.quantity / 100) * item.carbsPer100g),
+        fats: Math.round((item.quantity / 100) * item.fatsPer100g),
       }));
 
       const mealData = {
@@ -207,6 +207,7 @@ export default function DashboardPage() {
         searchQuery: '',
         searchResults: [],
       });
+      setActiveTab('dashboard'); // Go back to dashboard after saving
       loadDashboardData();
     } catch (error) {
       alert(error.message);
@@ -402,11 +403,11 @@ export default function DashboardPage() {
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <div className="text-5xl font-bold text-gray-800">
-                    {dailyStats?.totalCalories || 0}
+                    {Math.round(dailyStats?.totalCalories || 0)}
                   </div>
                   <div className="text-sm text-gray-500">of {goals?.targetCalories || 0}</div>
                   <div className="text-xs text-gray-400 mt-1">
-                    {remaining.calories > 0 ? `${remaining.calories} left` : 'Goal reached!'}
+                    {remaining.calories > 0 ? `${Math.round(remaining.calories)} left` : 'Goal reached!'}
                   </div>
                 </div>
               </div>
@@ -416,7 +417,7 @@ export default function DashboardPage() {
                 <div className="text-center">
                   <div className="text-sm text-gray-500 mb-1">Protein</div>
                   <div className="text-2xl font-bold text-blue-600">
-                    {dailyStats?.totalProtein || 0}g
+                    {Math.round(dailyStats?.totalProtein || 0)}g
                   </div>
                   <div className="text-xs text-gray-400">of {goals?.targetProtein || 0}g</div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
@@ -427,7 +428,7 @@ export default function DashboardPage() {
                 <div className="text-center">
                   <div className="text-sm text-gray-500 mb-1">Carbs</div>
                   <div className="text-2xl font-bold text-yellow-600">
-                    {dailyStats?.totalCarbs || 0}g
+                    {Math.round(dailyStats?.totalCarbs || 0)}g
                   </div>
                   <div className="text-xs text-gray-400">of {goals?.targetCarbs || 0}g</div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
@@ -438,7 +439,7 @@ export default function DashboardPage() {
                 <div className="text-center">
                   <div className="text-sm text-gray-500 mb-1">Fats</div>
                   <div className="text-2xl font-bold text-orange-600">
-                    {dailyStats?.totalFats || 0}g
+                    {Math.round(dailyStats?.totalFats || 0)}g
                   </div>
                   <div className="text-xs text-gray-400">of {goals?.targetFats || 0}g</div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
