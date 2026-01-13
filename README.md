@@ -6,7 +6,7 @@ Despite being an internal project, it involved real-world backend challenges, gi
 
 ⏳ Development Timeline
 
-Within approximately 2 days, I successfully:
+
 
 Learned and implemented backend fundamentals
 
