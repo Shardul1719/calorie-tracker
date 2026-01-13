@@ -541,7 +541,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* PROGRESS TAB */}
+      {/* PROGRESS TAB
       {activeTab === 'progress' && (
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h2 className="text-3xl font-bold mb-8">Your Progress</h2>
@@ -615,6 +615,373 @@ export default function DashboardPage() {
                 {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.fats, 0) / 7) || 0}g
               </div>
               <div className="text-xs text-gray-400">Last 7 days</div>
+            </div>
+          </div>
+        </div>
+      )} */}
+      {/* PROGRESS TAB */}
+      {activeTab === 'progress' && (
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <h2 className="text-3xl font-bold mb-8">Your Progress</h2>
+
+          {/* Debug info - remove after testing */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <p className="text-sm font-semibold mb-2">Debug Info:</p>
+            <p className="text-xs">Data points: {monthlyData.length}</p>
+            <p className="text-xs">Goal calories: {goals?.targetCalories || 'Not set'}</p>
+            {monthlyData.slice(-3).map((day, i) => (
+              <p key={i} className="text-xs">
+                {day.date}: {day.calories} cal ({Math.round((day.calories / (goals?.targetCalories || 2000)) * 100)}%)
+              </p>
+            ))}
+          </div>
+
+          {/* Calories Chart */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <h3 className="text-xl font-bold mb-6">Last 30 Days - Calories</h3>
+            
+            {monthlyData.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                <p>No data available yet. Start tracking your meals!</p>
+              </div>
+            ) : (
+              <>
+                <div className="relative h-96 bg-gray-50 rounded-lg p-4">
+                  {/* Y-axis */}
+                  <div className="absolute left-0 top-4 bottom-4 w-12 flex flex-col justify-between text-xs text-gray-600 text-right pr-2">
+                    <span>{goals?.targetCalories || 2000}</span>
+                    <span>{Math.round((goals?.targetCalories || 2000) * 0.75)}</span>
+                    <span>{Math.round((goals?.targetCalories || 2000) * 0.5)}</span>
+                    <span>{Math.round((goals?.targetCalories || 2000) * 0.25)}</span>
+                    <span>0</span>
+                  </div>
+
+                  {/* Chart area */}
+                  <div className="ml-14 h-full border-l-2 border-b-2 border-gray-300 relative">
+                    {/* Goal line */}
+                    <div className="absolute left-0 right-0 top-0 border-t-2 border-dashed border-green-500 opacity-40">
+                      <span className="absolute -top-6 right-0 text-xs text-green-600 font-semibold bg-white px-2">Goal</span>
+                    </div>
+
+                    {/* Bars */}
+                    <div className="h-full flex items-end gap-0.5 px-2">
+                      {monthlyData.slice(-30).map((day, idx) => {
+                        const targetCals = goals?.targetCalories || 2000;
+                        const rawPercentage = (day.calories / targetCals) * 100;
+                        // Ensure minimum visibility
+                        const displayHeight = day.calories > 0 
+                          ? Math.max(rawPercentage, 2) 
+                          : 0;
+                        const cappedHeight = Math.min(displayHeight, 100);
+                        
+                        const isToday = day.date === new Date().toISOString().split('T')[0];
+
+                        let barColor = 'bg-gray-300';
+                        if (day.calories >= targetCals) barColor = 'bg-green-600';
+                        else if (rawPercentage >= 80) barColor = 'bg-green-500';
+                        else if (rawPercentage >= 50) barColor = 'bg-yellow-500';
+                        else if (day.calories > 0) barColor = 'bg-orange-400';
+
+                        return (
+                          <div 
+                            key={idx} 
+                            className="flex-1 group relative flex flex-col items-stretch justify-end"
+                            style={{ minWidth: '8px' }}
+                          >
+                            {/* Tooltip */}
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap z-50 shadow-xl">
+                              <div className="font-bold mb-1">
+                                {new Date(day.date).toLocaleDateString('en-US', { 
+                                  month: 'short', 
+                                  day: 'numeric',
+                                  year: 'numeric'
+                                })}
+                              </div>
+                              <div className="text-green-300">🔥 {Math.round(day.calories)} cal</div>
+                              <div className="text-gray-300">📊 {Math.round(rawPercentage)}% of goal</div>
+                              <div className="text-blue-300 mt-1">💪 {Math.round(day.protein)}g protein</div>
+                              <div className="text-yellow-300">🍞 {Math.round(day.carbs)}g carbs</div>
+                              <div className="text-orange-300">🥑 {Math.round(day.fats)}g fats</div>
+                            </div>
+
+                            {/* Bar */}
+                            <div
+                              className={`w-full rounded-t-sm transition-all duration-200 cursor-pointer ${barColor} hover:opacity-80 ${
+                                isToday ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+                              }`}
+                              style={{ 
+                                height: `${cappedHeight}%`,
+                                minHeight: day.calories > 0 ? '8px' : '0px'
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* X-axis labels */}
+                  <div className="ml-14 mt-2 flex justify-between text-xs text-gray-500">
+                    {[0, 7, 14, 21, 28].map(offset => {
+                      const date = monthlyData.slice(-30)[offset];
+                      return date ? (
+                        <span key={offset}>
+                          {new Date(date.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </span>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+
+                {/* Legend */}
+                <div className="flex justify-center gap-6 mt-6 text-sm flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-4 bg-green-600 rounded" />
+                    <span>Above goal</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-4 bg-green-500 rounded" />
+                    <span>80-100%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-4 bg-yellow-500 rounded" />
+                    <span>50-80%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-4 bg-orange-400 rounded" />
+                    <span>&lt;50%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-4 bg-blue-500 rounded ring-2 ring-blue-500" />
+                    <span>Today</span>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Macros Charts */}
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {/* Protein Chart */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h4 className="font-bold text-blue-600 mb-4 text-lg">Protein (Last 7 Days)</h4>
+              {monthlyData.length < 7 ? (
+                <div className="h-64 flex items-center justify-center text-gray-400 text-sm">
+                  Track more days to see trends
+                </div>
+              ) : (
+                <>
+                  <div className="h-64 bg-blue-50 rounded-lg p-4 flex items-end gap-2">
+                    {monthlyData.slice(-7).map((day, idx) => {
+                      const target = goals?.targetProtein || 150;
+                      const percentage = (day.protein / target) * 100;
+                      const height = day.protein > 0 ? Math.max(Math.min(percentage, 100), 3) : 0;
+                      
+                      return (
+                        <div key={idx} className="flex-1 group relative flex flex-col items-center justify-end">
+                          {/* Tooltip */}
+                          <div className="absolute bottom-full mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded py-2 px-3 whitespace-nowrap z-50">
+                            <div className="font-bold">{new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                            <div className="text-blue-300">{Math.round(day.protein)}g</div>
+                            <div className="text-gray-300">{Math.round(percentage)}% of goal</div>
+                          </div>
+
+                          {/* Bar */}
+                          <div
+                            className="w-full bg-blue-500 hover:bg-blue-600 rounded-t transition-all cursor-pointer"
+                            style={{ 
+                              height: `${height}%`,
+                              minHeight: day.protein > 0 ? '8px' : '0'
+                            }}
+                          />
+                          
+                          {/* Label */}
+                          <span className="text-xs text-gray-600 font-medium mt-2">
+                            {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-4 text-center">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.protein, 0) / 7)}g
+                    </div>
+                    <div className="text-xs text-gray-500">avg / day</div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Carbs Chart */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h4 className="font-bold text-yellow-600 mb-4 text-lg">Carbs (Last 7 Days)</h4>
+              {monthlyData.length < 7 ? (
+                <div className="h-64 flex items-center justify-center text-gray-400 text-sm">
+                  Track more days to see trends
+                </div>
+              ) : (
+                <>
+                  <div className="h-64 bg-yellow-50 rounded-lg p-4 flex items-end gap-2">
+                    {monthlyData.slice(-7).map((day, idx) => {
+                      const target = goals?.targetCarbs || 200;
+                      const percentage = (day.carbs / target) * 100;
+                      const height = day.carbs > 0 ? Math.max(Math.min(percentage, 100), 3) : 0;
+                      
+                      return (
+                        <div key={idx} className="flex-1 group relative flex flex-col items-center justify-end">
+                          <div className="absolute bottom-full mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded py-2 px-3 whitespace-nowrap z-50">
+                            <div className="font-bold">{new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                            <div className="text-yellow-300">{Math.round(day.carbs)}g</div>
+                            <div className="text-gray-300">{Math.round(percentage)}% of goal</div>
+                          </div>
+
+                          <div
+                            className="w-full bg-yellow-500 hover:bg-yellow-600 rounded-t transition-all cursor-pointer"
+                            style={{ 
+                              height: `${height}%`,
+                              minHeight: day.carbs > 0 ? '8px' : '0'
+                            }}
+                          />
+                          
+                          <span className="text-xs text-gray-600 font-medium mt-2">
+                            {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-4 text-center">
+                    <div className="text-2xl font-bold text-yellow-600">
+                      {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.carbs, 0) / 7)}g
+                    </div>
+                    <div className="text-xs text-gray-500">avg / day</div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Fats Chart */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h4 className="font-bold text-orange-600 mb-4 text-lg">Fats (Last 7 Days)</h4>
+              {monthlyData.length < 7 ? (
+                <div className="h-64 flex items-center justify-center text-gray-400 text-sm">
+                  Track more days to see trends
+                </div>
+              ) : (
+                <>
+                  <div className="h-64 bg-orange-50 rounded-lg p-4 flex items-end gap-2">
+                    {monthlyData.slice(-7).map((day, idx) => {
+                      const target = goals?.targetFats || 65;
+                      const percentage = (day.fats / target) * 100;
+                      const height = day.fats > 0 ? Math.max(Math.min(percentage, 100), 3) : 0;
+                      
+                      return (
+                        <div key={idx} className="flex-1 group relative flex flex-col items-center justify-end">
+                          <div className="absolute bottom-full mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded py-2 px-3 whitespace-nowrap z-50">
+                            <div className="font-bold">{new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                            <div className="text-orange-300">{Math.round(day.fats)}g</div>
+                            <div className="text-gray-300">{Math.round(percentage)}% of goal</div>
+                          </div>
+
+                          <div
+                            className="w-full bg-orange-500 hover:bg-orange-600 rounded-t transition-all cursor-pointer"
+                            style={{ 
+                              height: `${height}%`,
+                              minHeight: day.fats > 0 ? '8px' : '0'
+                            }}
+                          />
+                          
+                          <span className="text-xs text-gray-600 font-medium mt-2">
+                            {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-4 text-center">
+                    <div className="text-2xl font-bold text-orange-600">
+                      {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.fats, 0) / 7)}g
+                    </div>
+                    <div className="text-xs text-gray-500">avg / day</div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Summary Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg p-6 border-2 border-green-200">
+              <div className="text-sm text-green-700 font-semibold mb-1">Avg Calories</div>
+              <div className="text-3xl font-bold text-green-700">
+                {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.calories, 0) / 7) || 0}
+              </div>
+              <div className="text-xs text-green-600 mt-1">Last 7 days</div>
+              <div className="mt-2 text-sm">
+                <span className={`font-bold ${
+                  (monthlyData.slice(-7).reduce((sum, d) => sum + d.calories, 0) / 7) >= (goals?.targetCalories || 0)
+                    ? 'text-green-700'
+                    : 'text-orange-600'
+                }`}>
+                  {Math.round(((monthlyData.slice(-7).reduce((sum, d) => sum + d.calories, 0) / 7) / (goals?.targetCalories || 1)) * 100)}%
+                </span>
+                <span className="text-green-600"> of goal</span>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-6 border-2 border-blue-200">
+              <div className="text-sm text-blue-700 font-semibold mb-1">Avg Protein</div>
+              <div className="text-3xl font-bold text-blue-700">
+                {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.protein, 0) / 7) || 0}g
+              </div>
+              <div className="text-xs text-blue-600 mt-1">Last 7 days</div>
+              <div className="mt-2 text-sm">
+                <span className={`font-bold ${
+                  (monthlyData.slice(-7).reduce((sum, d) => sum + d.protein, 0) / 7) >= (goals?.targetProtein || 0)
+                    ? 'text-green-700'
+                    : 'text-orange-600'
+                }`}>
+                  {Math.round(((monthlyData.slice(-7).reduce((sum, d) => sum + d.protein, 0) / 7) / (goals?.targetProtein || 1)) * 100)}%
+                </span>
+                <span className="text-blue-600"> of goal</span>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl shadow-lg p-6 border-2 border-yellow-200">
+              <div className="text-sm text-yellow-700 font-semibold mb-1">Avg Carbs</div>
+              <div className="text-3xl font-bold text-yellow-700">
+                {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.carbs, 0) / 7) || 0}g
+              </div>
+              <div className="text-xs text-yellow-600 mt-1">Last 7 days</div>
+              <div className="mt-2 text-sm">
+                <span className={`font-bold ${
+                  (monthlyData.slice(-7).reduce((sum, d) => sum + d.carbs, 0) / 7) >= (goals?.targetCarbs || 0)
+                    ? 'text-green-700'
+                    : 'text-orange-600'
+                }`}>
+                  {Math.round(((monthlyData.slice(-7).reduce((sum, d) => sum + d.carbs, 0) / 7) / (goals?.targetCarbs || 1)) * 100)}%
+                </span>
+                <span className="text-yellow-600"> of goal</span>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg p-6 border-2 border-orange-200">
+              <div className="text-sm text-orange-700 font-semibold mb-1">Avg Fats</div>
+              <div className="text-3xl font-bold text-orange-700">
+                {Math.round(monthlyData.slice(-7).reduce((sum, d) => sum + d.fats, 0) / 7) || 0}g
+              </div>
+              <div className="text-xs text-orange-600 mt-1">Last 7 days</div>
+              <div className="mt-2 text-sm">
+                <span className={`font-bold ${
+                  (monthlyData.slice(-7).reduce((sum, d) => sum + d.fats, 0) / 7) >= (goals?.targetFats || 0)
+                    ? 'text-green-700'
+                    : 'text-orange-600'
+                }`}>
+                  {Math.round(((monthlyData.slice(-7).reduce((sum, d) => sum + d.fats, 0) / 7) / (goals?.targetFats || 1)) * 100)}%
+                </span>
+                <span className="text-orange-600"> of goal</span>
+              </div>
             </div>
           </div>
         </div>
