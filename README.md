@@ -4,6 +4,9 @@ This project is my first complete full-stack web application. The primary goal o
 
 Despite being an internal project, it involved real-world backend challenges, giving me hands-on experience with authentication, databases, APIs, and deployment.
 
+NOTE: ADD MIN 2 DAYS MEALS TO SEE THE PROPER PROGRESS TAB
+
+
 ⏳ Development Timeline
 
 
