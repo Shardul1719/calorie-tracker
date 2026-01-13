@@ -1,29 +1,59 @@
-This project is an ongoing full-stack learning project and also my first complete experience building a full-stack web application, especially working deeply on the backend side.
+🍽️ Calorie Tracker – Full-Stack Web Application
 
-Although this was an internal project, I faced multiple real-world challenges while implementing authentication, database integration, API design, environment variables, and deployment. Through this process, I learned a lot about backend development, MongoDB, JWT authentication, API testing, and production deployment on Vercel.
+This project is my first complete full-stack web application. The primary goal of this project was to understand backend architecture and the complete full-stack workflow, rather than focusing heavily on UI design.
 
-Due to discovering the job opportunity a bit late, I had around 2 days to:
+Despite being an internal project, it involved real-world backend challenges, giving me hands-on experience with authentication, databases, APIs, and deployment.
 
-Learn and implement backend concepts
+⏳ Development Timeline
 
-Build APIs
+Within approximately 2 days, I successfully:
 
-Integrate the frontend with the backend
+Learned and implemented backend fundamentals
 
-Test APIs using Postman
+Designed and built REST APIs
 
-Deploy the application successfully
+Integrated frontend with backend services
 
-The current UI is basic and entry-level, as my primary focus during this phase was understanding backend architecture and full-stack workflow. I am actively working on improving the UI to make it cleaner, more interactive, and user-friendly, and I plan to push UI updates within the next 1–2 days.
+Tested APIs using Postman
 
-This project reflects my curiosity, learning mindset, and willingness to step outside my comfort zone to explore new technologies and concepts.
+Deployed the application to production
+
+This fast-paced development helped me understand how quickly full-stack systems need to be designed, tested, and shipped in real-world scenarios.
+
+🛠️ Backend & Full-Stack Learnings
+
+The backend development was done with the help of AI tools such as ChatGPT and Claude, which supported my learning process and helped me understand concepts more effectively.
+
+Through this project, I learned:
+
+How databases work, especially MongoDB
+
+Implementing JWT-based authentication
+
+Structuring and designing RESTful APIs
+
+Managing environment variables securely
+
+API testing using Postman
+
+Integrating frontend and backend applications
+
+Deployment workflow:
+
+Frontend deployed on Vercel
+
+Backend deployed on Render
+
+🎨 UI Status
+
+The current UI is basic and entry-level, as the main focus during development was on backend logic, authentication, and full-stack integration. UI improvements are planned and will be pushed soon.
 
 🚀 Live Deployment
 
 🔗 Live App:
 👉 https://calorie-tracker-hcpr.vercel.app/
 
-📌 Future Improvements (In Progress)
+📌 Planned Improvements
 
 UI/UX refinement
 
@@ -32,3 +62,7 @@ Better responsiveness and animations
 Improved dashboard layout
 
 Additional validations and feedback states
+
+💡 Final Note
+
+This project demonstrates my learning mindset, adaptability, and willingness to step outside my comfort zone to quickly learn new technologies and deliver a complete full-stack application under time constraints.
